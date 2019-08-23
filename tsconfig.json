@@ -1,0 +1,29 @@
+{
+    "compilerOptions": {
+        "lib": [
+            "es2018",
+            "esnext",
+            "esnext.asynciterable"
+        ],
+        "target": "esnext",
+        "allowJs": false,
+        "typeRoots": ["node_modules/@types"],
+        "module": "commonjs",
+        "noImplicitAny": false,
+        "alwaysStrict": true,
+        "removeComments": false,
+        "preserveConstEnums": true,
+        "outDir": "dist",
+        "strictNullChecks": true,
+        "allowUnreachableCode": true,
+        "sourceMap": true,
+        "skipLibCheck": true,
+        "noFallthroughCasesInSwitch": true
+    },
+    "include": [
+        "**/*.ts"
+    ],
+    "exclude": [
+        "node_modules/**/*"
+    ]
+}

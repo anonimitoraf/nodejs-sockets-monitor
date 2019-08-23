@@ -8,8 +8,7 @@ npm install nodejs-sockets-monitor
 yarn add nodejs-sockets-monitor
 ```
 
-### Allows subscription to socket stats. Example usage:
-
+### Allows subscription to socket stats. Example output and usage:
 ```typescript
 import { subscribeToSocketStats } from 'nodejs-sockets-monitor';
 
@@ -19,6 +18,11 @@ subscribeToSocketStats(stats => {
   console.table(stats);
 }, interval);
 ```
+┌────────────────┬────────┬───────┬─────────┬──────┬───────┬─────┬───────┬────────┬───────┬─────────┐
+│    (index)     │ active │ close │ connect │ data │ drain │ end │ error │ lookup │ ready │ timeout │
+├────────────────┼────────┼───────┼─────────┼──────┼───────┼─────┼───────┼────────┼───────┼─────────┤
+│ localhost:5984 │   1    │  34   │   35    │  34  │  33   │  0  │   0   │   35   │  35   │    0    │
+└────────────────┴────────┴───────┴─────────┴──────┴───────┴─────┴───────┴────────┴───────┴─────────┘
 
 ### Credits
 This codebase is essentially a refactoring of https://github.com/vigneshshanmugam/monitor-sockets

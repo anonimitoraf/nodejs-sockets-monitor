@@ -18,11 +18,9 @@ subscribeToSocketStats(stats => {
   console.table(stats);
 }, interval);
 ```
-┌────────────────┬────────┬───────┬─────────┬──────┬───────┬─────┬───────┬────────┬───────┬─────────┐
-│    (index)     │ active │ close │ connect │ data │ drain │ end │ error │ lookup │ ready │ timeout │
-├────────────────┼────────┼───────┼─────────┼──────┼───────┼─────┼───────┼────────┼───────┼─────────┤
-│ localhost:5984 │   1    │  34   │   35    │  34  │  33   │  0  │   0   │   35   │  35   │    0    │
-└────────────────┴────────┴───────┴─────────┴──────┴───────┴─────┴───────┴────────┴───────┴─────────┘
+| (index)  | active | close | connect | data | drain | end | error | lookup | ready | timeout |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| localhost:5984 | 1  | 34  | 35  | 34  | 33  | 0  | 0  | 35  | 35  | 0 |
 
 ### Credits
 This codebase is essentially a refactoring of https://github.com/vigneshshanmugam/monitor-sockets

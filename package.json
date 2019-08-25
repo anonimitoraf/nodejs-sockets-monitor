@@ -7,7 +7,9 @@
   "license": "GPL-3.0",
   "devDependencies": {
     "@types/node": "^12.7.2",
-    "@types/shimmer": "^1.0.1"
+    "@types/shimmer": "^1.0.1",
+    "ts-node": "^8.3.0",
+    "typescript": "^3.5.3"
   },
   "dependencies": {
     "shimmer": "^1.2.1"

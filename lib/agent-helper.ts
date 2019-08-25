@@ -1,3 +1,4 @@
+import * as net from 'net';
 import { Socket } from 'net';
 import * as shimmer from 'shimmer';
 
@@ -33,6 +34,7 @@ export type SocketStatsBySocketId = { [socketId: string]: SocketStats };
 export function setupSocketStatsUpdater(agent: any, statsBySocketId: SocketStatsBySocketId) {
   const monkeyPatch = makeMonkeyPatch(statsBySocketId);
   shimmer.wrap(agent.prototype, 'createConnection', monkeyPatch);
+  shimmer.wrap(net, 'createConnection', monkeyPatch);
 }
 
 function makeMonkeyPatch(statsBySocketId: SocketStatsBySocketId) {
@@ -57,47 +59,42 @@ function makeMonkeyPatch(statsBySocketId: SocketStatsBySocketId) {
 }
 
 function setupSocketListeners(socket: Socket, stats: SocketStats) {
-  // const socketRandomId = (Math.random() * 100000000).toFixed(0);
   let isCleanedUp = false;
 
   stats.active++;
 
   const onConnect = () => stats.connect++;
-  socket.once('connect', onConnect);
-
   const onDataReceive = () => stats.data++;
-  socket.once('data', onDataReceive);
-
   const onDrain = () => stats.drain++;
-  socket.once('drain', onDrain);
-
   const onLookup = () => stats.lookup++;
-  socket.once('lookup', onLookup);
-
   const onReady = () => stats.ready++;
-  socket.once('ready', onReady);
-
   const onTimeout = () => stats.timeout++;
-  socket.once('timeout', onTimeout);
-
   const onClose = () => {
     stats.close++;
     cleanup();
   }
-  socket.once('close', onClose);
-
   const onEnd = () => {
     stats.end++;
     cleanup();
   }
-  socket.once('end', onEnd);
-
   const onError = () => {
     stats.error++;
     cleanup();
   }
-  socket.once('error', onError);
 
+  const callbackByEventType = {
+    'connect': onConnect,
+    'data': onDataReceive,
+    'drain': onDrain,
+    'lookup': onLookup,
+    'ready': onReady,
+    'timeout': onTimeout,
+    'close': onClose,
+    'end': onEnd,
+    'error': onError
+  };
+
+  Object.entries(callbackByEventType).forEach(([eventType, cb]) => socket.once(eventType, cb));
 
   const cleanup = () => {
     if (isCleanedUp) return;
@@ -108,14 +105,11 @@ function setupSocketListeners(socket: Socket, stats: SocketStats) {
       console.warn(`Expected stats.active >= 1, value is ${stats.active}`);
     }
 
-    socket.removeListener('close', onClose);
-    socket.removeListener('data', onDataReceive);
-    socket.removeListener('end', onEnd);
-    socket.removeListener('error', onError);
+    Object.entries(callbackByEventType).forEach(([eventType, cb]) => socket.removeListener(eventType, cb));
     isCleanedUp = true;
   };
 }
 
-function makeSocketId(host: string, port: string) {
+export function makeSocketId(host: string, port: string | number) {
   return `${host}:${port}`;
 }

@@ -1,6 +1,6 @@
 {
   "name": "nodejs-sockets-monitor",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "main": "dist/index.js",
   "repository": "https://github.com/anonimitoraf/nodejs-sockets-monitor.git",
   "author": "raf <nicdaoraf@gmail.com>",
@@ -16,5 +16,9 @@
   },
   "scripts": {
     "build": "tsc"
-  }
+  },
+  "keywords": [
+    "socket",
+    "monitor"
+  ]
 }
